@@ -1,0 +1,17 @@
+/* Extra responsive tweaks */
+
+@media (max-width: 900px){
+  .hero__grid{
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+    text-align: left;
+  }
+  .hero__visual{ order: -1; }
+}
+@media (max-width: 768px){
+  .hero__copy h1{ font-size: 2rem; }
+  .hero__cta{ flex-direction: column; }
+
+  /* Hide inline nav on mobile; drawer is used instead */
+  .nav__menu{ /* layout handled in style.css mobile block */ }
+}
