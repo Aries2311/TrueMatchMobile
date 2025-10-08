@@ -78,7 +78,7 @@ section, .section, #cta { scroll-margin-top: 84px; }
    =========================== */
 .site-header{
   position:sticky; top:0; z-index:50;
-  background: rgba(10,15,26,.72);          /* darker glass */
+  background: rgba(10,15,26,.72);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom:1px solid rgba(255,255,255,.06);
@@ -117,7 +117,7 @@ section, .section, #cta { scroll-margin-top: 84px; }
 .hero__grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:2.5rem; align-items:center }
 .hero__copy h1{ font-size: clamp(2rem, 3.5vw, 3rem); margin:0 0 .6rem; text-shadow: 0 2px 10px rgba(0,0,0,.28); }
 .lead{
-  color:#F3F8FF;                  /* brighter lead copy for readability */
+  color:#F3F8FF;
   margin:0 0 1.1rem;
   font-size:1.1rem;
 }
@@ -200,12 +200,40 @@ section, .section, #cta { scroll-margin-top: 84px; }
   display:grid; place-items:center; text-align:center; gap:.6rem; box-shadow: var(--shadow);
 }
 
-.footer{ padding: 30px 0 calc(30px + var(--safe-bottom)); border-top:1px solid rgba(255,255,255,.06) }
-.footer__grid{ display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap }
-.footer__brand img{ width:28px; height:28px; object-fit:contain; }
-.footer__nav a{ color:#e0e8f4; margin-left:.8rem; text-decoration:none }
-.footer__nav a:hover{ text-decoration:underline }
-.muted{ color:var(--muted) }
+/* ===== Polished Footer ===== */
+.footer{
+  padding: 36px 0 calc(36px + var(--safe-bottom));
+  background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0));
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.footer__grid{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:1rem; flex-wrap:wrap;
+}
+.footer__brand{ display:flex; align-items:center; gap:.6rem; }
+.footer__brand img{ width:28px; height:28px; object-fit:contain; filter: drop-shadow(0 2px 8px rgba(0,0,0,.3)); }
+.footer__brand .muted{ margin:0; color:#cfd8e6; }
+
+.footer__nav{ display:flex; align-items:center; gap:.35rem; flex-wrap:wrap; }
+.footer__nav a{
+  color:#e0e8f4; text-decoration:none;
+  padding:.35rem .6rem; border-radius:999px; transition:background .2s ease, color .2s ease, transform .2s ease;
+}
+.footer__nav a:hover{ background: rgba(255,255,255,.08); transform: translateY(-1px); }
+
+/* dot separators between links (desktop only) */
+.footer__nav a + a::before{
+  content:"•";
+  color:rgba(255,255,255,.35);
+  margin-right:.35rem;
+}
+
+/* mobile footer stacking */
+@media (max-width: 640px){
+  .footer__grid{ flex-direction:column; align-items:flex-start; gap:.75rem; }
+  .footer__nav{ gap:.5rem; }
+  .footer__nav a + a::before{ content:""; margin:0; } /* remove dots on tight screens */
+}
 
 /* ===========================
    Carousel (generic)
@@ -316,7 +344,7 @@ section, .section, #cta { scroll-margin-top: 84px; }
   .nav__bar{ width:28px; height:2px }
 }
 
-/* Prevent background scroll when drawer open */
+/* Prevent background scroll when drawer open (only used if your JS adds .no-scroll) */
 .no-scroll{ overflow:hidden; }
 
 /* =========================
@@ -345,9 +373,10 @@ section, .section, #cta { scroll-margin-top: 84px; }
     z-index: 1000;
 
     display: flex; flex-direction: column; gap: .2rem;
+    align-items: center; justify-content: center; text-align: center;
 
     width: clamp(170px, 56vw, 230px);
-    padding: .45rem;
+    padding: .6rem .7rem;
     border-radius: 12px;
 
     background: rgba(12, 16, 24, 0.22);
@@ -370,82 +399,31 @@ section, .section, #cta { scroll-margin-top: 84px; }
     transition: opacity .2s ease, transform .2s ease;
   }
   .site-header .container .nav__menu a{
-    width: 100%; font-size: .9rem; line-height: 1.2; padding: .5rem .7rem; border-radius: 10px;
+    width: 100%; font-size: .9rem; line-height: 1.2; padding: .55rem .75rem; border-radius: 10px;
   }
   .site-header .container .nav__menu a:hover{ background: rgba(255,255,255,.06); }
-  .site-header .container .nav__menu .btn{ width:100%; font-size:.9rem; padding:.6rem .8rem; }
-  body.no-scroll{ overflow: hidden; }
+  .site-header .container .nav__menu .btn{ width: auto; align-self: center; padding-inline: 1rem; }
 }
+
 /* ===== Mobile: keep header & hamburger always visible ===== */
 @media (max-width: 768px){
   .site-header{
-    position: fixed;          /* pin to viewport */
-    top: 0;                   /* respect notch via body padding below */
-    left: 0;
-    right: 0;
-    z-index: 1200;            /* above content */
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1200;
   }
-
-  /* Give the page a top offset equal to the header height
-     so content doesn’t jump under the fixed header. */
-  body{
-    padding-top: calc(64px + var(--safe-top));
-  }
-
-  /* Make sure the hamburger button stays clickable above all */
+  body{ padding-top: calc(64px + var(--safe-top)); }
   .nav__toggle{ z-index: 1300; }
 }
-/* Center items inside the mobile hamburger menu */
-@media (max-width: 1024px){
-  /* The glass panel itself */
-  .site-header .nav .nav__menu{
-    /* existing positioning you already have is fine; we just add centering */
-    display: flex;
-    flex-direction: column;
-    align-items: center;     /* ← centers items horizontally */
-    justify-content: center; /* ← keeps vertical spacing consistent */
-    text-align: center;      /* ← centers link text */
-    gap: .35rem;             /* tighter, even spacing */
-    padding: .6rem .7rem;    /* compact padding inside the glass panel */
-  }
 
-  /* Each link in the menu */
-  .site-header .nav .nav__menu a{
-    display: flex;
-    align-items: center;
-    justify-content: center; /* ← centers the link content */
-    width: 100%;
-    padding: .55rem .75rem;
-    border-radius: 10px;
-  }
-
-  /* The CTA inside the menu stays centered but not full-width */
-  .site-header .nav .nav__menu .btn{
-    width: auto;
-    align-self: center;      /* ← keep the button centered */
-    padding-inline: 1rem;
-    margin-top: .2rem;
-  }
-}
-/* FAQ: animated accordion */
+/* FAQ: animated accordion (height animation via JS) */
 .faq details { position: relative; }
-
 .faq details .faq__content{
-  height: 0;                 /* collapsed height */
+  height: 0;
   overflow: hidden;
   opacity: 0;
   transform: translateY(-4px);
-  transition:
-    height .32s ease,
-    opacity .25s ease,
-    transform .32s ease;
+  transition: height .32s ease, opacity .25s ease, transform .32s ease;
 }
-
-/* while the <details> is open we just fade/slide (height is animated via JS) */
-.faq details[open] .faq__content{
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* optional: nicer summary tap target spacing (keeps your existing card style) */
+.faq details[open] .faq__content{ opacity: 1; transform: translateY(0); }
 .faq summary{ list-style: none; cursor: pointer; }
